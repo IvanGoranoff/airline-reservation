@@ -39,3 +39,59 @@
 .booking-form button:hover {
   background-color: var(--secondary-color);
 }
+.booking-form {
+  max-width: 600px; /* Регулирайте според предпочитанията си */
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.form-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px; /* Разстояние между елементите */
+  margin-bottom: 10px;
+}
+
+.form-row input,
+.form-row select {
+  width: 100%; /* Полетата да заемат цялото налично пространство */
+}
+
+/* Стил за контейнера на бутоните */
+.form-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px; /* Разстояние между бутоните */
+}
+
+/* Стил за бутоните */
+button {
+  padding: 10px 20px; /* Увеличете padding, ако е необходимо */
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button[type="submit"] {
+  background-color: #007bff;
+  color: white;
+}
+
+button[type="button"] {
+  background-color: #6c757d;
+  color: white;
+}
+
+/* Стил за грешките */
+.error-message {
+  color: red;
+  font-size: 1em;
+}
+
+.has-error {
+  border-color: red;
+}
+
+

@@ -1,16 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import './components/styles/App.css';
+import React, { useState } from 'react';
 import Form from './components/Form';
-// import BookingList from './components/BookingList';
-// Предполагаме, че имате функция getAirports във вашия api.js файл
+import BookingList from './components/BookingList';
 
 function App() {
+  const [bookingCreated, setBookingCreated] = useState(false);
 
+  const handleBookingSuccess = () => {
+    setBookingCreated(true);
+  };
 
   return (
     <div className="App">
-      <Form />
-      {/* <BookingList /> */}
+      <Form onBookingSuccess={handleBookingSuccess} />
+      {bookingCreated && <BookingList />}
     </div>
   );
 }
