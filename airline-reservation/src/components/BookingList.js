@@ -14,9 +14,12 @@ function BookingList() {
 
         getBookings(pageIndex, pageSize)
             .then(response => {
-                if (response && response.data && Array.isArray(response.data.list)) {
-                    setBookings(response.data.list);
+                if (response && response.list && Array.isArray(response.list)) {
+                    console.log(response.list)
+                    setBookings(response.list);
                 } else {
+                    console.log(response)
+
                     console.error('Invalid data format:', response);
                 }
             })
@@ -24,6 +27,7 @@ function BookingList() {
                 console.error('Error fetching bookings:', error);
             });
     };
+
 
     const handleDelete = (bookingId) => {
         deleteBooking(bookingId)
