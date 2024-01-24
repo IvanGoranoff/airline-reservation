@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getBookings, deleteBooking } from '../api/api';
+import '../styles/BookingList.css';
 
 function BookingList() {
     const [bookings, setBookings] = useState([]);
@@ -40,18 +41,19 @@ function BookingList() {
     };
 
     return (
-        <div>
-            <h2>Bookings</h2>
-            <ul>
+        <div className="bookings-container">
+            <h2 className="booking-list-title">Bookings</h2>
+            <ul className="booking-list">
                 {bookings.map(booking => (
                     <li key={booking.id}>
                         <p>{booking.firstName} {booking.lastName} - From Airport ID {booking.departureAirportId} to Airport ID {booking.arrivalAirportId}</p>
-                        <button onClick={() => handleDelete(booking.id)}>Delete</button>
+                        <button className="delete-button" onClick={() => handleDelete(booking.id)}>Delete</button>
                     </li>
                 ))}
             </ul>
         </div>
     );
+
 }
 
 export default BookingList;
