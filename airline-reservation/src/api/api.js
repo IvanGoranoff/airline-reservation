@@ -1,33 +1,43 @@
-// src/api/api.js
-import axios from 'axios';
-
 const baseURL = 'https://interview.fio.de/core-frontend/api';
 const token = 'sZROsd2ZNfl4CBnBRTcULRFnoxTSkF';
 
-const api = axios.create({
-  baseURL,
-  headers: {
-    Authorization: `Bearer ${token}`,
-  },
-});
+const headers = {
+  'Content-Type': 'application/json',
+  'Authorization': `Bearer ${token}`,
+};
+
+
 
 export const getAirports = () => {
-  return api.get('/airports');
+  return fetch(`${baseURL}/airports`, { headers })
+    .then(response => response.json());
 };
 
 export const getBookings = (pageIndex, pageSize) => {
-  return api.get(`/bookings?pageIndex=${pageIndex}&pageSize=${pageSize}`);
+  return fetch(`${baseURL}/bookings?pageIndex=${pageIndex}&pageSize=${pageSize}`, { headers })
+    .then(response => response.json());
 };
 
 export const getBookingDetails = (bookingId) => {
-  return api.get(`/bookings/${bookingId}`);
+  return fetch(`${baseURL}/bookings/${bookingId}`, { headers })
+    .then(response => response.json());
 };
 
 export const createBooking = (bookingData) => {
-  return api.post('/bookings/create', bookingData);
-};
+    const url = `${baseURL}/bookings/create?authToken=${token}`;
+    return fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(bookingData),
+    }).then(response => response.json());
+  };
+  
 
 export const deleteBooking = (bookingId) => {
-  return api.delete(`/bookings/delete/${bookingId}`);
+  return fetch(`${baseURL}/bookings/delete/${bookingId}`, {
+    method: 'DELETE',
+    headers
+  }).then(response => response.json());
 };
-

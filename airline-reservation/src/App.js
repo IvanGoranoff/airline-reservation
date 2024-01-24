@@ -1,14 +1,16 @@
+import React, { useState, useEffect } from 'react';
 import './components/styles/App.css';
+import Form from './components/Form';
+// import BookingList from './components/BookingList';
+// Предполагаме, че имате функция getAirports във вашия api.js файл
 
 function App() {
+
+
   return (
     <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-      
-      </header>
+      <Form />
+      {/* <BookingList /> */}
     </div>
   );
 }
