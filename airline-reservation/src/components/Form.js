@@ -60,6 +60,7 @@ console.log(airports)
 
   return (
     <form className="booking-form" onSubmit={handleSubmit}>
+        <h2>Plane Ticket Booking</h2> 
         <input 
         type="text"
         name="firstName"
