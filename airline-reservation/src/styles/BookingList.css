@@ -57,3 +57,12 @@
     margin-top: 10px;
   }
 }
+.booking-info p {
+  margin: 1;
+  padding: 1;
+  line-height: 1.5;
+  margin-bottom: 0.5rem;
+}
+.airport-name::after {
+  content: ' '; 
+}

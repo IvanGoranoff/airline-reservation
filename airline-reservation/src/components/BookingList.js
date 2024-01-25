@@ -11,7 +11,11 @@ function BookingList() {
     const [pageIndex, setPageIndex] = useState(0);
     const [hasMore, setHasMore] = useState(true);
     const [airports, setAirports] = useState({});
-    const getAirportNameById = (id) => airports[id] || 'Unknown Airport';
+    const [modalMessage, setModalMessage] = useState('');
+
+    const getAirportName = (airportId) => {
+        return airports[airportId] || 'Unknown';
+    };
 
     const fetchBookings = useCallback((pageIndex = 0, pageSize = 10) => {
         if (!hasMore) return;
@@ -35,13 +39,14 @@ function BookingList() {
     }, [fetchBookings, pageIndex]);
 
     useEffect(() => {
-        const airportMap = {};
-        getAirports().then(airports => {
-            airports.forEach(airport => {
-                airportMap[airport.id] = airport.name;
+        getAirports()
+            .then(airportsData => {
+                const airportsMap = airportsData.reduce((map, airport) => {
+                    map[airport.id] = airport.title;
+                    return map;
+                }, {});
+                setAirports(airportsMap);
             });
-            setAirports(airportMap);
-        });
     }, []);
 
     useEffect(() => {
@@ -55,6 +60,13 @@ function BookingList() {
     }, []);
 
     const handleDeleteClick = (bookingId) => {
+        const bookingToDelete = bookings.find(booking => booking.id === bookingId);
+        if (bookingToDelete) {
+            const fromAirport = getAirportName(bookingToDelete.departureAirportId);
+            const toAirport = getAirportName(bookingToDelete.arrivalAirportId);
+            const message = `Are you sure you want to delete the booking from ${fromAirport} to ${toAirport}?`;
+            setModalMessage(message);
+        }
         setSelectedBookingId(bookingId);
         setModalOpen(true);
     };
@@ -71,28 +83,27 @@ function BookingList() {
             });
     };
 
-
     return (
         <div className="bookings-container">
             <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)} onConfirm={handleDeleteConfirm}>
-                <p>Are you sure you want to delete this booking?</p>
+                <p>{modalMessage}</p>
             </Modal>
             <h2 className="booking-list-title">Bookings</h2>
             <ul className="booking-list">
                 {bookings.map((booking, index) => (
                     <li key={booking.id + '-' + index}>
-                        <p>
-                            {booking.firstName} {booking.lastName} -
-                            From {getAirportNameById(booking.departureAirportId)}
-                            to {getAirportNameById(booking.arrivalAirportId)}
-                        </p>
-                        <p>
-                            Departure: {new Date(booking.departureDate).toLocaleDateString()} -
-                            Return: {new Date(booking.returnDate).toLocaleDateString()}
-                        </p>
+                        <div className="booking-info">
+                            <p>
+                                {booking.firstName} {booking.lastName} -
+                                From <span className="airport-name">{getAirportName(booking.departureAirportId)}</span> to {getAirportName(booking.arrivalAirportId)}
+                            </p>
+                            <p>
+                                Departure: {new Date(booking.departureDate).toLocaleDateString()} -
+                                Return: {new Date(booking.returnDate).toLocaleDateString()}
+                            </p>
+                        </div>
                         <button className="delete-button" onClick={() => handleDeleteClick(booking.id)}>Delete</button>
                     </li>
-
                 ))}
             </ul>
             {hasMore && <p>Loading more...</p>}
