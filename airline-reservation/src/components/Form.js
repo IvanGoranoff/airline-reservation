@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/Form.css';
 import { createBooking, getAirports } from '../api/api';
-import '../styles/Form.css';
+
 
 function Form(props) {
     const initialFormState = {
@@ -95,7 +95,7 @@ function Form(props) {
             });
     };
 
-    // ...
+
 
     return (
         <form className="booking-form" onSubmit={handleSubmit}>
