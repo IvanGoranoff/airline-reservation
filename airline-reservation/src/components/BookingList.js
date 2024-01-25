@@ -1,6 +1,6 @@
 // BookingList.js
 import React, { useState, useEffect, useCallback } from 'react';
-import { getBookings, deleteBooking } from '../api/api';
+import { getBookings, deleteBooking, getAirports } from '../api/api';
 import Modal from './Modal'; // Make sure you have this component created.
 import '../styles/BookingList.css';
 
@@ -10,6 +10,8 @@ function BookingList() {
     const [selectedBookingId, setSelectedBookingId] = useState(null);
     const [pageIndex, setPageIndex] = useState(0);
     const [hasMore, setHasMore] = useState(true);
+    const [airports, setAirports] = useState({});
+    const getAirportNameById = (id) => airports[id] || 'Unknown Airport';
 
     const fetchBookings = useCallback((pageIndex = 0, pageSize = 10) => {
         if (!hasMore) return;
@@ -31,6 +33,16 @@ function BookingList() {
     useEffect(() => {
         fetchBookings(pageIndex);
     }, [fetchBookings, pageIndex]);
+
+    useEffect(() => {
+        const airportMap = {};
+        getAirports().then(airports => {
+            airports.forEach(airport => {
+                airportMap[airport.id] = airport.name;
+            });
+            setAirports(airportMap);
+        });
+    }, []);
 
     useEffect(() => {
         const handleScroll = () => {
@@ -56,9 +68,9 @@ function BookingList() {
             })
             .catch(error => {
                 console.error('Error deleting booking:', error);
-                setModalOpen(false);
             });
     };
+
 
     return (
         <div className="bookings-container">
@@ -67,11 +79,20 @@ function BookingList() {
             </Modal>
             <h2 className="booking-list-title">Bookings</h2>
             <ul className="booking-list">
-                {bookings.map(booking => (
-                    <li key={booking.id}>
-                        <p>{booking.firstName} {booking.lastName} - From Airport ID {booking.departureAirportId} to Airport ID {booking.arrivalAirportId}</p>
+                {bookings.map((booking, index) => (
+                    <li key={booking.id + '-' + index}>
+                        <p>
+                            {booking.firstName} {booking.lastName} -
+                            From {getAirportNameById(booking.departureAirportId)}
+                            to {getAirportNameById(booking.arrivalAirportId)}
+                        </p>
+                        <p>
+                            Departure: {new Date(booking.departureDate).toLocaleDateString()} -
+                            Return: {new Date(booking.returnDate).toLocaleDateString()}
+                        </p>
                         <button className="delete-button" onClick={() => handleDeleteClick(booking.id)}>Delete</button>
                     </li>
+
                 ))}
             </ul>
             {hasMore && <p>Loading more...</p>}
