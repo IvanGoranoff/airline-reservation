@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import '../styles/Form.css';
 import { createBooking, getAirports } from '../api/api';
 
-
 function Form(props) {
+    // Initial state setup for form fields and errors
     const initialFormState = {
         firstName: '',
         lastName: '',
@@ -16,11 +16,13 @@ function Form(props) {
     const [airports, setAirports] = useState([]);
     const [errors, setErrors] = useState({});
 
+    // Resets the form to initial state
     const resetForm = () => {
         setFormData(initialFormState);
         setErrors({});
     };
 
+    // Fetches the list of airports 
     useEffect(() => {
         getAirports()
             .then(response => setAirports(response))
@@ -28,6 +30,7 @@ function Form(props) {
 
     }, []);
 
+    // Updates form data
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData(prev => ({ ...prev, [name]: value }));
@@ -39,6 +42,7 @@ function Form(props) {
         return `form-input${errors[name] ? ' has-error' : ''}`;
     };
 
+    // Validates the form data
     const validateForm = () => {
         let validationErrors = {};
 
@@ -47,18 +51,15 @@ function Form(props) {
         const departureDate = new Date(formData.departureDate);
         const returnDate = new Date(formData.returnDate);
 
-        // Валидация за имената
         if (!formData.firstName.trim()) validationErrors.firstName = 'First name is required';
         if (!formData.lastName.trim()) validationErrors.lastName = 'Last name is required';
 
-        // Валидация за летищата
         if (!formData.departureAirportId) validationErrors.departureAirportId = 'Departure airport is required';
         if (!formData.arrivalAirportId) validationErrors.arrivalAirportId = 'Arrival airport is required';
         if (formData.departureAirportId === formData.arrivalAirportId) {
             validationErrors.arrivalAirportId = 'Arrival airport must be different from departure airport';
         }
 
-        // Валидация за датите
         if (!formData.departureDate) {
             validationErrors.departureDate = 'Departure date is required';
         } else if (departureDate < todayDate) {
@@ -78,7 +79,7 @@ function Form(props) {
     };
 
 
-
+    // Handles the form submit
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -93,7 +94,6 @@ function Form(props) {
                 console.error('Error creating booking:', error);
             });
     };
-
 
 
     return (
@@ -158,7 +158,7 @@ function Form(props) {
                     key="arrivalAirportId"
                     value={formData.departureDate}
                     onChange={handleInputChange}
-                    min={today} // Минималната дата е текущата дата
+                    min={today}
                     required
                 />
                 <input
@@ -167,7 +167,7 @@ function Form(props) {
                     name="returnDate"
                     value={formData.returnDate}
                     onChange={handleInputChange}
-                    min={formData.departureDate || today} // Минималната дата
+                    min={formData.departureDate || today}
                     required
                 />
             </div>

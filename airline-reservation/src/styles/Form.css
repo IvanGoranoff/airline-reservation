@@ -59,14 +59,12 @@
   width: 100%; 
 }
 
-/* Стил за контейнера на бутоните */
 .form-buttons {
   display: flex;
   justify-content: space-between;
   gap: 20px; 
 }
 
-/* Стил за бутоните */
 button {
   padding: 10px 20px; 
   border: none;

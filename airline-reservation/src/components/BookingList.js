@@ -11,17 +11,21 @@ function BookingList() {
     const [hasMore, setHasMore] = useState(true);
     const [airports, setAirports] = useState({});
     const [modalMessage, setModalMessage] = useState('');
+    const [notification, setNotification] = useState(null);
 
+    // get airport name by ID
     const getAirportName = (airportId) => {
         return airports[airportId] || 'Unknown';
     };
 
-    const fetchBookings = useCallback((pageIndex = 0, pageSize = 10) => {
+    // fetch bookings from the server
+    const fetchBookings = useCallback((pageIndex = 0, pageSize = 5) => {
         if (!hasMore) return;
 
         getBookings(pageIndex, pageSize)
             .then(response => {
                 if (response && response.list && Array.isArray(response.list)) {
+                    // Append new bookings to the existing list for infinite scroll
                     setBookings(prev => [...prev, ...response.list]);
                     setHasMore(response.list.length === pageSize);
                 } else {
@@ -33,10 +37,12 @@ function BookingList() {
             });
     }, [hasMore]);
 
+    //fetch bookings on component mount and when pageIndex changes
     useEffect(() => {
         fetchBookings(pageIndex);
     }, [fetchBookings, pageIndex]);
 
+    //  fetch airport names on component mount
     useEffect(() => {
         getAirports()
             .then(airportsData => {
@@ -48,6 +54,7 @@ function BookingList() {
             });
     }, []);
 
+    //handle infinite scroll
     useEffect(() => {
         const handleScroll = () => {
             if (window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight) return;
@@ -58,6 +65,7 @@ function BookingList() {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
+    //  handle delete button click
     const handleDeleteClick = (bookingId) => {
         const bookingToDelete = bookings.find(booking => booking.id === bookingId);
         if (bookingToDelete) {
@@ -70,12 +78,17 @@ function BookingList() {
         setModalOpen(true);
     };
 
+    // confirm the deletion of a booking
     const handleDeleteConfirm = () => {
         deleteBooking(selectedBookingId)
             .then(() => {
                 setBookings(currentBookings => currentBookings.filter(booking => booking.id !== selectedBookingId));
                 setModalOpen(false);
                 setSelectedBookingId(null);
+                // Set the notification message
+                setNotification('Booking successfully deleted.');
+                // Remove the notification after some time
+                setTimeout(() => setNotification(null), 3000);
             })
             .catch(error => {
                 console.error('Error deleting booking:', error);
@@ -87,6 +100,7 @@ function BookingList() {
             <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)} onConfirm={handleDeleteConfirm}>
                 <p>{modalMessage}</p>
             </Modal>
+            {notification && <div className="notification">{notification}</div>}
             <h2 className="booking-list-title">Bookings</h2>
             <ul className="booking-list">
                 {bookings.map((booking, index) => (

@@ -66,3 +66,21 @@
 .airport-name::after {
   content: ' '; 
 }
+.notification {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #4caf50;
+  color: white;
+  padding: 10px;
+  border-radius: 4px;
+  z-index: 1000; 
+  animation: fadeOut 3s forwards; 
+}
+/* Fade-out animation */
+@keyframes fadeOut {
+  0% { opacity: 1; }
+  66% { opacity: 1; }
+  100% { opacity: 0; }
+}
