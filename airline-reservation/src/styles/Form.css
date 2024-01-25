@@ -40,7 +40,7 @@
   background-color: var(--secondary-color);
 }
 .booking-form {
-  max-width: 600px; /* Регулирайте според предпочитанията си */
+  max-width: 600px; 
   margin: auto;
   padding: 20px;
   border: 1px solid #ccc;
@@ -50,25 +50,25 @@
 .form-row {
   display: flex;
   justify-content: space-between;
-  gap: 20px; /* Разстояние между елементите */
+  gap: 20px; 
   margin-bottom: 10px;
 }
 
 .form-row input,
 .form-row select {
-  width: 100%; /* Полетата да заемат цялото налично пространство */
+  width: 100%; 
 }
 
 /* Стил за контейнера на бутоните */
 .form-buttons {
   display: flex;
   justify-content: space-between;
-  gap: 20px; /* Разстояние между бутоните */
+  gap: 20px; 
 }
 
 /* Стил за бутоните */
 button {
-  padding: 10px 20px; /* Увеличете padding, ако е необходимо */
+  padding: 10px 20px; 
   border: none;
   border-radius: 4px;
   cursor: pointer;

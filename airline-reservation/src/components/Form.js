@@ -42,7 +42,6 @@ function Form(props) {
     const validateForm = () => {
         let validationErrors = {};
 
-        // Преобразувайте today от ISO стринг към обект Date за сравнение
         const todayDate = new Date(today);
 
         const departureDate = new Date(formData.departureDate);
@@ -168,7 +167,7 @@ function Form(props) {
                     name="returnDate"
                     value={formData.returnDate}
                     onChange={handleInputChange}
-                    min={formData.departureDate || today} // Минималната дата е датата на тръгване или текущата дата, ако датата на тръгване не е зададена
+                    min={formData.departureDate || today} // Минималната дата
                     required
                 />
             </div>

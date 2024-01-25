@@ -1,7 +1,6 @@
-// BookingList.js
 import React, { useState, useEffect, useCallback } from 'react';
 import { getBookings, deleteBooking, getAirports } from '../api/api';
-import Modal from './Modal'; // Make sure you have this component created.
+import Modal from './Modal';
 import '../styles/BookingList.css';
 
 function BookingList() {
