@@ -28,7 +28,6 @@ function BookingList() {
                     // Append new bookings to the existing list for infinite scroll
                     setBookings(prev => [...prev, ...response.list]);
                     setHasMore(response.list.length === pageSize);
-                    console.log(bookings, hasMore)
                 } else {
                     console.error('Invalid data format:', response);
                 }
@@ -58,7 +57,7 @@ function BookingList() {
     //handle infinite scroll
     useEffect(() => {
         const handleScroll = () => {
-            if (window.innerHeight + document.documentElement.scrollTop < document.documentElement.offsetHeight - 100) return;
+            if (window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight) return;
             setPageIndex(prevPageIndex => prevPageIndex + 1);
         };
 

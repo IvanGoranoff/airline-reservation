@@ -1,0 +1,86 @@
+.bookings-container {
+  max-width: 600px;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: white;
+}
+
+.booking-list-title {
+  text-align: center;
+  color: var(--primary-color);
+}
+
+.booking-list ul {
+  list-style: none;
+  padding: 0;
+}
+
+.booking-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+  padding: 10px 0;
+}
+
+.booking-list p {
+  margin: 0;
+}
+
+.delete-button {
+  padding: 5px 10px;
+  background-color: var(--secondary-color);
+  color: white;
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+}
+
+.delete-button:hover {
+  background-color: #004080;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .bookings-container {
+    padding: 10px;
+  }
+
+  .booking-list li {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .delete-button {
+    margin-top: 10px;
+  }
+}
+.booking-info p {
+  margin: 1;
+  padding: 1;
+  line-height: 1.5;
+  margin-bottom: 0.5rem;
+}
+.airport-name::after {
+  content: ' '; 
+}
+.notification {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #4caf50;
+  color: white;
+  padding: 10px;
+  border-radius: 4px;
+  z-index: 1000; 
+  animation: fadeOut 3s forwards; 
+}
+/* Fade-out animation */
+@keyframes fadeOut {
+  0% { opacity: 1; }
+  66% { opacity: 1; }
+  100% { opacity: 0; }
+}
