@@ -18,7 +18,8 @@ function BookingList() {
         return airports[airportId] || 'Unknown';
     };
 
-    // fetch bookings from the server
+    // useCallback хук за мемоизиране на функцията за зареждане на резервации
+    // Оптимизира производителността, като предотвратява ненужни ре-рендери
     const fetchBookings = useCallback((pageIndex = 0, pageSize = 5) => {
         if (!hasMore) return;
 
@@ -27,7 +28,7 @@ function BookingList() {
                 if (response && response.list && Array.isArray(response.list)) {
                     // Append new bookings to the existing list for infinite scroll
                     setBookings(prev => [...prev, ...response.list]);
-                    setHasMore(response.list.length === pageSize);
+                    setHasMore(response.list.length === pageSize); // Обновяване на hasMore
                     console.log(bookings, hasMore)
                 } else {
                     console.error('Invalid data format:', response);
@@ -47,6 +48,8 @@ function BookingList() {
     useEffect(() => {
         getAirports()
             .then(airportsData => {
+                //да се създаде обект, в който ключовете са идентификаторите на летищата (airport.id), 
+                //а стойностите са имената на съответните летища (airport.title)
                 const airportsMap = airportsData.reduce((map, airport) => {
                     map[airport.id] = airport.title;
                     return map;
@@ -55,11 +58,12 @@ function BookingList() {
             });
     }, []);
 
-    //handle infinite scroll
+    // useEffect за добавяне на event listener за скрол, поддържащ infinite scroll функционалността
     useEffect(() => {
         const handleScroll = () => {
+            // Проверка дали потребителят е скролнал до дъното на страницата
             if (window.innerHeight + document.documentElement.scrollTop < document.documentElement.offsetHeight - 100) return;
-            setPageIndex(prevPageIndex => prevPageIndex + 1);
+            setPageIndex(prevPageIndex => prevPageIndex + 1); // Увеличаване на pageIndex, за да зареди следващата страница
         };
 
         window.addEventListener('scroll', handleScroll);
@@ -68,8 +72,10 @@ function BookingList() {
 
     //  handle delete button click
     const handleDeleteClick = (bookingId) => {
+        // Намиране на резервацията за изтриване
         const bookingToDelete = bookings.find(booking => booking.id === bookingId);
         if (bookingToDelete) {
+            // Създаване на съобщението за модалния прозорец
             const fromAirport = getAirportName(bookingToDelete.departureAirportId);
             const toAirport = getAirportName(bookingToDelete.arrivalAirportId);
             const message = `Are you sure you want to delete the booking from ${fromAirport} to ${toAirport}?`;
@@ -79,10 +85,11 @@ function BookingList() {
         setModalOpen(true);
     };
 
-    // confirm the deletion of a booking
+    // Функция за потвърждение на изтриването на резервация
     const handleDeleteConfirm = () => {
         deleteBooking(selectedBookingId)
             .then(() => {
+                // Обновяване на списъка с резервации след изтриване
                 setBookings(currentBookings => currentBookings.filter(booking => booking.id !== selectedBookingId));
                 setModalOpen(false);
                 setSelectedBookingId(null);

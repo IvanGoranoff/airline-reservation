@@ -38,6 +38,7 @@ function Form(props) {
 
     const today = new Date().toISOString().split('T')[0];
 
+    // Функция за генериране на класове на CSS в зависимост от наличието на грешки
     const inputClassName = (name) => {
         return `form-input${errors[name] ? ' has-error' : ''}`;
     };
